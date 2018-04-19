@@ -19,8 +19,7 @@ class UserController extends Controller {
         $redirect = Yii::$app->request->get('redirect');
         $app = Weixin::getApp();
         $response = $app->oauth->scopes(['snsapi_userinfo'])
-            ->redirect();
-//        Url::to(['/oauth/callback', 'state' => base64_encode($redirect)], true)
+            ->redirect(Url::to(['oauth/callback', 'state' => base64_encode($redirect)], true));
         return $response->send();
     }
 }

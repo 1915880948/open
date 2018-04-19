@@ -47,7 +47,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'oauth/<state:\S+>' => 'oauth/callback?state=<state:\S+>'
+                'oauth/<state:\S+>' => 'oauth/callback'
             ],
         ]
     ],

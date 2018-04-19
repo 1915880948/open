@@ -16,7 +16,7 @@ class OauthController extends Controller {
     public function actionCallback($state){
         $code = Yii::$app->request->get('code');
         $redirect = base64_decode($state);
-        return $this->redirect($redirect . '?code=' . $code);
+        return $this->redirect($redirect . '/oauth/callback?code=' . $code);
     }
 
     public function actionIndex(){

@@ -58,7 +58,7 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        var_dump(Url::to(['/oauth/callback', 'state' => base64_encode('http://kaixin.guaschool.com')]));die;
+        var_dump(base64_decode('454e853e3243dda3d30205e52300ce0b'));die;
         return $this->render('index');
     }
 

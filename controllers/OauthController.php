@@ -18,4 +18,10 @@ class OauthController extends Controller {
         $state = Yii::$app->request->get('state');
         return $this->redirect($state . '?code=' . $code);
     }
+
+    public function actionIndex(){
+        $code = Yii::$app->request->get('code');
+        $state = Yii::$app->request->get('state');
+        return $this->redirect($state . '?code=' . $code);
+    }
 }

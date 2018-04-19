@@ -58,7 +58,7 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        var_dump(Url::to(['/oauth/callback', 'state' => base64_encode('http://www.baidu.com')]));
+        var_dump(Url::to(['/oauth/callback', 'state' => base64_encode('http://www.baidu.com')]));die;
         return $this->render('index');
     }
 

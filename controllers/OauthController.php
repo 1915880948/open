@@ -15,8 +15,9 @@ use yii\web\Controller;
 class OauthController extends Controller {
     public function actionCallback($state){
         $code = Yii::$app->request->get('code');
+        var_dump($state);
 //        $state = Yii::$app->request->get('state');
-        return $this->redirect($state . '?code=' . $code);
+//        return $this->redirect($state . '?code=' . $code);
     }
 
     public function actionIndex(){

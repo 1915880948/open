@@ -6,7 +6,7 @@
  * Time: 下午11:31
  */
 
-namespace app\common;
+namespace app\common\wechat;
 
 
 use EasyWeChat\Factory;

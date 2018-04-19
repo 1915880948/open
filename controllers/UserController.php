@@ -9,7 +9,7 @@
 namespace app\controllers;
 
 
-use app\common\Weixin;
+use app\common\wechat\Weixin;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;

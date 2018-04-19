@@ -32,8 +32,11 @@ class Weixin {
             'payment' => [
                 'merchant_id' => $wx['Weixin_Payment'],
                 'key' => $wx['Weixin_Payment_Key'],
-            ]
-
+            ],
+            'oauth' => [
+                'scopes'   => ['snsapi_userinfo'],
+                'callback' => '/oauth/callback',
+            ],
         ];
     }
 }

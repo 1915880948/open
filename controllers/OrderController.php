@@ -30,7 +30,8 @@ class OrderController extends AdminBaseController {
         if ($result['return_code'] === 'SUCCESS') {
             $prepayId = $result['prepay_id'];
             $jssdk = Weixin::getPayment()->jssdk;
-            $config = $jssdk->sdkConfig($prepayId);
+            $json = $jssdk->bridgeConfig($prepayId);
+//            $config = $jssdk->sdkConfig($prepayId);
             //                $pay = "wx.chooseWXPay({
             //                        timestamp: {$config['timestamp']},
             //                        nonceStr: '{$config['nonceStr']}',
@@ -43,7 +44,7 @@ class OrderController extends AdminBaseController {
             //                    });";
             //                echo "<script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.3.0.js'></script>";
             //                echo "<script type='text/javascript'>{$pay}</script>";
-            return $this->render('pay', compact('config'));
+            return $this->render('pay', compact('json'));
         } else {
             echo 'Error';
         }

@@ -31,7 +31,16 @@
                     {{--}--}}
                 {{--});--}}
             }
-            pay();
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', pay, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', pay);
+                    document.attachEvent('onWeixinJSBridgeReady', pay);
+                }
+            }else{
+                pay();
+            }
         });
     </script>
 @stop

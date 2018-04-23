@@ -21,8 +21,9 @@ class OrderController extends AdminBaseController {
 
     public function actionPay(){
         Yii::$app->response->format = 'json';
+        $uid = Yii::$app->request->post('uid');
         $account = Account::find()
-            ->andWhere(['id' => $this->uid])
+            ->andWhere(['id' => $uid])
             ->asArray()
             ->one();
         $order_id = Yii::$app->request->post('id');
@@ -31,7 +32,7 @@ class OrderController extends AdminBaseController {
             ->select("guagua_order.price,guagua_order.out_trade_no,course.title")
             ->leftJoin(Course::tableName(), 'guagua_order.course_id=course.id')
             ->andWhere(['guagua_order.id' => $order_id])
-            ->andFilterWhere(['order.school_id'=>$this->schoolId])
+//            ->andFilterWhere(['order.school_id'=>$this->schoolId])
             ->asArray()
             ->one();
         $attributes = [

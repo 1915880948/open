@@ -10,41 +10,24 @@ namespace app\controllers;
 
 
 use app\common\wechat\Weixin;
-use app\models\Account;
-use app\models\Course;
-use app\models\GuaguaOrder;
-use app\models\User;
+use GuzzleHttp\Client;
 use Yii;
-use yii\base\Exception;
 use yii\helpers\Json;
-use yii\helpers\Url;
 
 class OrderController extends AdminBaseController {
 
     public function actionPay() {
         $json_detail = Yii::$app->request->post('json_detail');
+        $ret_url = Yii::$app->request->post('ret_url');
+        $notify_url = Yii::$app->request->post('notify_url');
         $attributes = Json::decode($json_detail);
         $result = Weixin::getPayment()->order->unify($attributes);
-        $config = [];
-        //        var_dump($result['return_code']);die;
         if ($result['return_code'] === 'SUCCESS') {
             $prepayId = $result['prepay_id'];
             $jssdk = Weixin::getPayment()->jssdk;
             $json = $jssdk->bridgeConfig($prepayId);
-//            $config = $jssdk->sdkConfig($prepayId);
-            //                $pay = "wx.chooseWXPay({
-            //                        timestamp: {$config['timestamp']},
-            //                        nonceStr: '{$config['nonceStr']}',
-            //                        package: '{$config['package']}',
-            //                        signType: '{$config['signType']}',
-            //                        paySign: '{$config['paySign']}', // 支付签名
-            //                        success: function (res) {
-            //                            alert('支付成功');
-            //                        }
-            //                    });";
-            //                echo "<script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.3.0.js'></script>";
-            //                echo "<script type='text/javascript'>{$pay}</script>";
-            return $this->render('pay', compact('json'));
+            Yii::$app->session->set($attributes['out_trade_no'].'_notify', $notify_url);
+            return $this->render('pay', compact('json', 'ret_url'));
         } else {
             echo 'Error';
         }
@@ -54,34 +37,14 @@ class OrderController extends AdminBaseController {
     public function actionNotify() {
         $payment = Weixin::getPayment();
         $response = $payment->handlePaidNotify(function ($message, $fail) {
-            $order = GuaguaOrder::find()->andWhere(['out_trade_no' => $message['out_trade_no']])->one();
-            if (!$order || $order->paid_at) {
-                return true;
-            }
-            if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
-                // 用户是否支付成功
-                if ($message['result_code'] === 'SUCCESS') {
-                    $order->is_pay = 1;
-                    $order->pay_time = date('Y-m-d H:i:s');
-                    $order->order_status = 1;
-                    // 支付成功，第一次购买，在user表中增加一条数据。
-                    $account = Account::find()->andWhere(['id' => $order->uid])->asArray()->one();
-                    if (!$account['uid']) {
-                        $info = [
-                            'account_id' => $order->uid,
-                            'username' => $order->contact_name,
-                            'phone' => $order->contact_phone
-                        ];
-                        (new User())->create($info);
-                    }
-                } elseif ($message['result_code'] === 'FAIL') {
-                    $order->order_status = 0;
-                }
-                $order->save();
-                return true;
-            } else {
-                return $fail('通信失败，请稍后再通知我');
-            }
+            $client = new Client();
+            $response = $client->request('POST', Yii::$app->session->get($message['out_trade_no'].'_notify'), [
+                'form_params' => [
+                    'message' => $message
+                ]
+            ]);
+            $body = (string)($response->getBody());
+            return true;
         });
         $response->send();
     }

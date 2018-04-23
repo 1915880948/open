@@ -42,6 +42,7 @@ class OrderController extends AdminBaseController {
                             alert('支付成功');
                         }
                     });";
+                echo "<script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.3.0.js'></script>";
                 echo "<script type='text/javascript'>{$pay}</script>";
             } catch (Exception $e){
                 echo $e->getMessage();

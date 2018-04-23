@@ -15,35 +15,14 @@ use app\models\Course;
 use app\models\GuaguaOrder;
 use app\models\User;
 use Yii;
+use yii\helpers\Json;
 use yii\helpers\Url;
 
 class OrderController extends AdminBaseController {
 
     public function actionPay(){
-        Yii::$app->response->format = 'json';
-        $uid = Yii::$app->request->post('uid');
-        $account = Account::find()
-            ->andWhere(['openid' => $uid])
-            ->asArray()
-            ->one();
-        $order_id = Yii::$app->request->post('id');
-//        $app = Weixin::getApp();
-        $order = GuaguaOrder::find()
-            ->select("guagua_order.price,guagua_order.out_trade_no,course.title")
-            ->leftJoin(Course::tableName(), 'guagua_order.course_id=course.id')
-            ->andWhere(['guagua_order.id' => $order_id])
-//            ->andFilterWhere(['order.school_id'=>$this->schoolId])
-            ->asArray()
-            ->one();
-        $attributes = [
-            'trade_type' => 'JSAPI',
-            'body' => $order['price'],
-            'detail' => $order['title'],
-            'out_trade_no' => $order['out_trade_no'],
-            'total_fee' => 1, //$orderData['total_price']*100, // 单位：分
-            'notify_url' => Url::to(['/order/notify'], true), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-            'openid' => $account['openid']
-        ];
+        $json_detail = Yii::$app->request->post('json_detail');
+        $attributes = Json::decode($json_detail);
         $result = Weixin::getPayment()->order->unify($attributes);
         $config = [];
         var_dump($result);die;

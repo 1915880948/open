@@ -25,8 +25,8 @@ class OrderController extends AdminBaseController {
         $attributes = Json::decode($json_detail);
         $result = Weixin::getPayment()->order->unify($attributes);
         $config = [];
-        if($result->return_code == 'SUCCESS'){
-            $prepayId = $result->prepay_id;
+        if($result['return_code'] == 'SUCCESS'){
+            $prepayId = $result['prepay_id'];
             $jssdk = Weixin::getPayment()->jssdk;
             $config = $jssdk->sdkConfig($prepayId);
             $pay = "wx.chooseWXPay({

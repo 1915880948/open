@@ -25,11 +25,21 @@ class OrderController extends AdminBaseController {
         $attributes = Json::decode($json_detail);
         $result = Weixin::getPayment()->order->unify($attributes);
         $config = [];
-        var_dump($result);die;
-        if($result->xml->return_code == 'SUCCESS'){
-            $prepayId = $result->xml->prepay_id;
+        if($result->return_code == 'SUCCESS'){
+            $prepayId = $result->prepay_id;
             $jssdk = Weixin::getPayment()->jssdk;
             $config = $jssdk->sdkConfig($prepayId);
+            $pay = "wx.chooseWXPay({
+                        timestamp: {$config['timestamp']},
+                        nonceStr: {$config['nonceStr']}',
+                        package: {$config['package']}',
+                        signType: {$config['signType']}',
+                        paySign: {$config['paySign']}', // 支付签名
+                        success: function (res) {
+                            alert('支付成功');
+                        }
+                    });";
+            echo "<script type='text/javascript'>{$pay}</script>";
         }
         return $config;
     }

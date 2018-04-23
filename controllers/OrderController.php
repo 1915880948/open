@@ -26,7 +26,7 @@ class OrderController extends AdminBaseController {
             $prepayId = $result['prepay_id'];
             $jssdk = Weixin::getPayment()->jssdk;
             $json = $jssdk->bridgeConfig($prepayId);
-            Yii::$app->session->set($attributes['out_trade_no'].'_notify', $notify_url);
+            Yii::$app->cache->set($attributes['out_trade_no'].'_notify', $notify_url, 86400);
             return $this->render('pay', compact('json', 'ret_url'));
         } else {
             echo 'Error';
@@ -38,9 +38,9 @@ class OrderController extends AdminBaseController {
         $payment = Weixin::getPayment();
         $response = $payment->handlePaidNotify(function ($message, $fail) {
             Yii::error($message);
-            Yii::error(Yii::$app->session->get($message['out_trade_no'].'_notify'));
+            Yii::error(Yii::$app->cache->get($message['out_trade_no'].'_notify'));
             $client = new Client();
-            $response = $client->request('POST', Yii::$app->session->get($message['out_trade_no'].'_notify'), [
+            $response = $client->request('POST', Yii::$app->cache->get($message['out_trade_no'].'_notify'), [
                 'form_params' => [
                     'message' => $message
                 ]

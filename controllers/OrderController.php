@@ -31,7 +31,6 @@ class OrderController extends AdminBaseController {
             $prepayId = $result['prepay_id'];
             $jssdk = Weixin::getPayment()->jssdk;
             $json = $jssdk->bridgeConfig($prepayId);
-            var_dump($json);die;
 //            $config = $jssdk->sdkConfig($prepayId);
             //                $pay = "wx.chooseWXPay({
             //                        timestamp: {$config['timestamp']},

@@ -13,7 +13,7 @@
                     'getBrandWCPayRequest', <?= $json ?>,
                     function(res){
                         if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-                            location.href = '{{ $ret_url['ret_url'] }}';
+                            location.href = '{{ $ret_url }}';
                         }
                     }
                 );

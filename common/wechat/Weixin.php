@@ -30,6 +30,7 @@ class Weixin {
             'token' => '',
             'aes_key' => '', // 可选
             'mch_id' => $wx['Weixin_Payment'],
+            'key' => $wx['Weixin_Payment_Key'],
             'log' => [
                 'level' => 'debug',
                 'file' => sys_get_temp_dir() . '/easywechat.log', // XXX: 绝对路径！！！！

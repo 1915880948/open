@@ -43,6 +43,7 @@ class OrderController extends AdminBaseController {
             //                    });";
             //                echo "<script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.3.0.js'></script>";
             //                echo "<script type='text/javascript'>{$pay}</script>";
+            var_dump(compact('config'));die;
             return $this->render('pay', compact('config'));
         } else {
             echo 'Error';

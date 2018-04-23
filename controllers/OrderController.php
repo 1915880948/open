@@ -15,6 +15,7 @@ use app\models\Course;
 use app\models\GuaguaOrder;
 use app\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
@@ -27,10 +28,11 @@ class OrderController extends AdminBaseController {
         $config = [];
 //        var_dump($result['return_code']);die;
         if($result['return_code'] === 'SUCCESS'){
-            $prepayId = $result['prepay_id'];
-            $jssdk = Weixin::getPayment()->jssdk;
-            $config = $jssdk->sdkConfig($prepayId);
-            $pay = "wx.chooseWXPay({
+            try {
+                $prepayId = $result['prepay_id'];
+                $jssdk = Weixin::getPayment()->jssdk;
+                $config = $jssdk->sdkConfig($prepayId);
+                $pay = "wx.chooseWXPay({
                         timestamp: {$config['timestamp']},
                         nonceStr: {$config['nonceStr']}',
                         package: {$config['package']}',
@@ -40,7 +42,10 @@ class OrderController extends AdminBaseController {
                             alert('支付成功');
                         }
                     });";
-            echo "<script type='text/javascript'>{$pay}</script>";
+                echo "<script type='text/javascript'>{$pay}</script>";
+            } catch (Exception $e){
+                echo $e->getMessage();
+            }
         }
         echo 'Error';
     }

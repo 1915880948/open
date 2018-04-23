@@ -13,7 +13,7 @@
     $(function () {
         {{--wx.config({!! jssdk()->setUrl(yUrlCurrent())->config(['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage',--}}
         {{--'menuItem:profile','menuItem:addContact','menuItem:share:appMessage','menuItem:share:timeline']) !!});--}}
-        wx.config({!! \app\common\wechat\Weixin::getApp()->js->config(['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage',
+        wx.config({!! \app\common\wechat\Weixin::getApp()->jssdk->buildConfig(['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage',
                     'menuItem:profile','menuItem:addContact','menuItem:share:appMessage','menuItem:share:timeline','chooseWXPay',"chooseImage", "previewImage", "uploadImage", "downloadImage",
                      'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'uploadVoice']) !!});
     })

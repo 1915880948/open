@@ -10,16 +10,15 @@ namespace app\controllers;
 
 
 use app\common\wechat\Weixin;
+use app\controllers\api\AdminBaseController;
 use app\models\Account;
 use app\models\Course;
 use app\models\GuaguaOrder;
 use app\models\User;
 use Yii;
 use yii\helpers\Url;
-use yii\web\Controller;
 
-class OrderController extends Controller {
-    public $enableCsrfValidation = false;
+class OrderController extends AdminBaseController {
 
     public function actionPay(){
         Yii::$app->response->format = 'json';

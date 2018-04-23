@@ -32,18 +32,19 @@ class OrderController extends AdminBaseController {
                 $prepayId = $result['prepay_id'];
                 $jssdk = Weixin::getPayment()->jssdk;
                 $config = $jssdk->sdkConfig($prepayId);
-                $pay = "wx.chooseWXPay({
-                        timestamp: {$config['timestamp']},
-                        nonceStr: '{$config['nonceStr']}',
-                        package: '{$config['package']}',
-                        signType: '{$config['signType']}',
-                        paySign: '{$config['paySign']}', // 支付签名
-                        success: function (res) {
-                            alert('支付成功');
-                        }
-                    });";
-                echo "<script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.3.0.js'></script>";
-                echo "<script type='text/javascript'>{$pay}</script>";
+//                $pay = "wx.chooseWXPay({
+//                        timestamp: {$config['timestamp']},
+//                        nonceStr: '{$config['nonceStr']}',
+//                        package: '{$config['package']}',
+//                        signType: '{$config['signType']}',
+//                        paySign: '{$config['paySign']}', // 支付签名
+//                        success: function (res) {
+//                            alert('支付成功');
+//                        }
+//                    });";
+//                echo "<script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.3.0.js'></script>";
+//                echo "<script type='text/javascript'>{$pay}</script>";
+                return $this->render('pay', compact('config'));
             } catch (Exception $e){
                 echo $e->getMessage();
             }

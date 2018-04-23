@@ -26,6 +26,8 @@ class OrderController extends AdminBaseController {
             $prepayId = $result['prepay_id'];
             $jssdk = Weixin::getPayment()->jssdk;
             $json = $jssdk->bridgeConfig($prepayId);
+            var_dump($ret_url);
+            var_dump($notify_url);die;
             Yii::$app->session->set($attributes['out_trade_no'].'_notify', $notify_url);
             return $this->render('pay', compact('json', 'ret_url'));
         } else {

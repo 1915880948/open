@@ -6,7 +6,7 @@
  * Time: 下午4:26
  */
 
-namespace app\controllers\api;
+namespace app\controllers;
 
 header("Access-Control-Allow-Method:POST,GET,OPTIONS");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Token");

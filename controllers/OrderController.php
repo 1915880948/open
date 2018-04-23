@@ -10,7 +10,6 @@ namespace app\controllers;
 
 
 use app\common\wechat\Weixin;
-use app\controllers\api\AdminBaseController;
 use app\models\Account;
 use app\models\Course;
 use app\models\GuaguaOrder;

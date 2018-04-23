@@ -23,7 +23,7 @@ class OrderController extends AdminBaseController {
         Yii::$app->response->format = 'json';
         $uid = Yii::$app->request->post('uid');
         $account = Account::find()
-            ->andWhere(['id' => $uid])
+            ->andWhere(['openid' => $uid])
             ->asArray()
             ->one();
         $order_id = Yii::$app->request->post('id');

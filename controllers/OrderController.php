@@ -37,6 +37,8 @@ class OrderController extends AdminBaseController {
     public function actionNotify() {
         $payment = Weixin::getPayment();
         $response = $payment->handlePaidNotify(function ($message, $fail) {
+            Yii::error($message);
+            Yii::error(Yii::$app->session->get($message['out_trade_no'].'_notify'));
             $client = new Client();
             $response = $client->request('POST', Yii::$app->session->get($message['out_trade_no'].'_notify'), [
                 'form_params' => [

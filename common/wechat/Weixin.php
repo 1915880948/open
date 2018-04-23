@@ -17,6 +17,10 @@ class Weixin {
         return Factory::officialAccount(self::getOptions());
     }
 
+    public static function getPayment(){
+        return Factory::payment(self::getOptions());
+    }
+
     protected static function getOptions() {
         $wx = \Yii::$app->params['Weixin'];
         return [

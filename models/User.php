@@ -2,103 +2,79 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+
+/**
+ * This is the model class for table "{{%user}}".
+ *
+ * @property int $id
+ * @property string $username 用户名
+ * @property string $email
+ * @property string $phone 手机号
+ * @property string $portrait 头像地址
+ * @property int $credits 积分
+ * @property int $status
+ * @property string $create_time
+ */
+class User extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return '{{%user}}';
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
+        return [
+            [['credits'], 'integer'],
+            [['create_time'], 'safe'],
+            [['username'], 'string', 'max' => 16],
+            [['email'], 'string', 'max' => 255],
+            [['phone'], 'string', 'max' => 32],
+            [['portrait'], 'string', 'max' => 300],
+            [['status'], 'string', 'max' => 1],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'email' => 'Email',
+            'phone' => 'Phone',
+            'portrait' => 'Portrait',
+            'credits' => 'Credits',
+            'status' => 'Status',
+            'create_time' => 'Create Time',
+        ];
+    }
+
+    public function create($info)
+    {
+        if($info['account_id'] && $info['username'] && $info['phone']){
+            $model = new User();
+            $model->username = $info['username'];
+            $model->phone = $info['phone'];
+            $model->create_time = date("Y-m-d H:i:s");
+            if( $model->save() ){
+                $account = Account::findOne(['id'=>$info['account_id']]);
+                $account->uid = $model->attributes['id'];
+                $account->phone = $info['phone'];
+                $account->save();
+                return true;
             }
+            return $model->getErrors();
         }
-
-        return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+        return false;
     }
 }

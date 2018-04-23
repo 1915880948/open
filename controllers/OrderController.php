@@ -41,7 +41,7 @@ class OrderController extends AdminBaseController {
                     });";
             echo "<script type='text/javascript'>{$pay}</script>";
         }
-        return $config;
+        echo 'Error';
     }
 
     public function actionNotify(){

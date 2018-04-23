@@ -21,6 +21,9 @@ class OrderController extends AdminBaseController {
         $ret_url = Yii::$app->request->post('ret_url');
         $notify_url = Yii::$app->request->post('notify_url');
         $attributes = Json::decode($json_detail);
+        if(Yii::$app->cache->get($attributes['out_trade_no'].'_status')){
+            return $this->redirect($ret_url);
+        }
         $result = Weixin::getPayment()->order->unify($attributes);
         if ($result['return_code'] === 'SUCCESS') {
             $prepayId = $result['prepay_id'];
@@ -46,6 +49,7 @@ class OrderController extends AdminBaseController {
                 ]
             ]);
             $body = (string)($response->getBody());
+            Yii::$app->cache->set($message['out_trade_no'].'_status', 'OK');
             return true;
         });
         $response->send();

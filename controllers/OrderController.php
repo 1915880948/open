@@ -25,6 +25,7 @@ class OrderController extends AdminBaseController {
             return $this->redirect($ret_url);
         }
         $result = Weixin::getPayment()->order->unify($attributes);
+        Yii::error($result);
         if ($result['return_code'] === 'SUCCESS') {
             $prepayId = $result['prepay_id'];
             $jssdk = Weixin::getPayment()->jssdk;

@@ -12,7 +12,7 @@ namespace app\controllers;
 use app\common\wechat\Weixin;
 use yii\web\Controller;
 
-class WechatController extends Controller {
+class WechatController extends AdminBaseController {
     public function actionConfig(){
         $app = Weixin::getApp();
         $config = $app->jssdk->buildConfig(['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage',

@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title')@stop
+@section('title')微信支付@stop
 
 @section('content')
 

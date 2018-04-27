@@ -48,6 +48,8 @@ class OrderController extends AdminBaseController {
                 ]
             ]);
             $body = (string)($response->getBody());
+            Yii::error($body);
+            Yii::error(Yii::$app->cache->get($message['out_trade_no'].'_notify'));
             Yii::$app->cache->set($message['out_trade_no'].'_status', 'OK');
             return true;
         });

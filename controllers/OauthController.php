@@ -17,7 +17,7 @@ class OauthController extends Controller {
         $code = Yii::$app->request->get('code');
         $redirect = base64_decode($state);
         $urls = parse_url($redirect);
-        $sub = explode('/', $urls['path'])[1];
+        $sub = explode('/', $urls['path']);
         var_dump($redirect);
         var_dump($sub);
         var_dump($urls);die;

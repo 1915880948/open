@@ -20,6 +20,7 @@ class OrderController extends AdminBaseController {
         $json_detail = Yii::$app->request->post('json_detail');
         $ret_url = Yii::$app->request->post('ret_url');
         $notify_url = Yii::$app->request->post('notify_url');
+        $error_url = Yii::$app->request->post('error_url');
         $attributes = Json::decode($json_detail);
         if(Yii::$app->cache->get($attributes['out_trade_no'].'_status')){
             return $this->redirect($ret_url);
@@ -33,7 +34,7 @@ class OrderController extends AdminBaseController {
             Yii::$app->cache->set($attributes['out_trade_no'].'_notify', $notify_url, 86400);
             return $this->render('pay', compact('json', 'ret_url'));
         } else {
-            echo 'Error';
+            return $this->redirect($error_url);
         }
 
     }

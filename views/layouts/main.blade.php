@@ -11,6 +11,8 @@
 @yield('content')
 <script src="{{ yStatic('js/jquery-2.1.4.js') }}"></script>
 <script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.3.0.js'></script>
+<script src="//cdn.jsdelivr.net/npm/eruda"></script>
+<script>eruda.init();</script>
 <script type="text/javascript" charset="utf-8">
     $(function () {
         wx.config({!! \app\common\wechat\Weixin::getApp()->jssdk->buildConfig(['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage',

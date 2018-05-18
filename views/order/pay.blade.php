@@ -14,7 +14,9 @@
                     function(res){
                         if(res.err_msg == "get_brand_wcpay_request:ok" ) {
                             location.href = '{{ $ret_url }}';
+                            return;
                         }
+                        location.href = '{{ $error_url }}';
                     }
                 );
             }

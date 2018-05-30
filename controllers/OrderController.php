@@ -42,7 +42,7 @@ class OrderController extends AdminBaseController {
     public function actionNotify() {
         $payment = Weixin::getPayment();
         $response = $payment->handlePaidNotify(function ($message, $fail) {
-            Yii::error($message);
+//            Yii::error($message);
             $client = new Client();
             $response = $client->request('POST', Yii::$app->cache->get($message['out_trade_no'].'_notify'), [
                 'form_params' => [
@@ -50,7 +50,7 @@ class OrderController extends AdminBaseController {
                 ]
             ]);
             $body = (string)($response->getBody());
-//            Yii::error($body);
+            Yii::info($body);
 //            Yii::error(Yii::$app->cache->get($message['out_trade_no'].'_notify'));
             Yii::$app->cache->set($message['out_trade_no'].'_status', 'OK');
             return true;

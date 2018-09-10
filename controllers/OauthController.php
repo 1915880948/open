@@ -22,7 +22,7 @@ class OauthController extends Controller {
             return $this->redirect("{$urls['scheme']}://{$urls['host']}/{$sub}/oauth/callback?{$urls['query']}&code={$code}");
         }
         if( $sub == 'wx-login-admin' ){
-            return $this->redirect("{$urls['scheme']}://{$urls['host']}/oauth/callback");
+            return $this->redirect("{$urls['scheme']}://{$urls['host']}/oauth/callback?code={$code}");
         }
         return $this->redirect("{$urls['scheme']}://{$urls['host']}/{$sub}/oauth/callback?code={$code}");
     }

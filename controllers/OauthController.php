@@ -17,7 +17,6 @@ class OauthController extends Controller {
         $code = Yii::$app->request->get('code');
         $redirect = base64_decode($state);
         $urls = parse_url($redirect);
-        print_r( $redirect) ; die;
         $sub = explode('/', $urls['path'])[1];
         if(isset($urls['query'])){
             return $this->redirect("{$urls['scheme']}://{$urls['host']}/{$sub}/oauth/callback?{$urls['query']}&code={$code}");
